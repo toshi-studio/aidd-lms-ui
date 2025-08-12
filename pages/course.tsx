@@ -3,11 +3,12 @@ import { Theme, Box, Container, Flex, Heading, Text, Button, Separator } from '@
 import { CheckIcon } from '@radix-ui/react-icons';
 import Banner from '../components/Banner';
 import Sidebar from '../components/Sidebar';
+import { getAssetPath } from '../utils/assets';
 
 const CoursePage: React.FC = () => {
   // Sample student data
   const studentName = 'Toshi';
-  const studentAvatar = '/assets/avatar.png';
+  const studentAvatar = getAssetPath('/assets/avatar.png');
 
   // Sample course data
   const courseTitle = 'Introduction to AI';

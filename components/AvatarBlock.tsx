@@ -1,5 +1,6 @@
 import React from 'react';
 import { Flex, Avatar, Text } from '@radix-ui/themes';
+import { getAssetPath } from '../utils/assets';
 
 interface AvatarBlockProps {
   name: string;
@@ -9,7 +10,7 @@ interface AvatarBlockProps {
 
 const AvatarBlock: React.FC<AvatarBlockProps> = ({ 
   name, 
-  avatarUrl = '/assets/avatar.png',
+  avatarUrl = getAssetPath('/assets/avatar.png'),
   size = '3'
 }) => {
   return (

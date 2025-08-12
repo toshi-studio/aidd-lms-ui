@@ -4,6 +4,7 @@ import { GearIcon, ExitIcon, PlusIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import AvatarBlock from './AvatarBlock';
 import StatusPill from './StatusPill';
+import { getAssetPath } from '../utils/assets';
 
 interface Course {
   id: string;
@@ -31,7 +32,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({
   userName,
-  avatarUrl = '/assets/avatar.png',
+  avatarUrl = getAssetPath('/assets/avatar.png'),
   variant,
   courses = [],
   chapters = [],

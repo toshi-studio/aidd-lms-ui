@@ -9,7 +9,7 @@ import { getAssetPath } from '../utils/assets';
 const DashboardTeacherPage: React.FC = () => {
   // Sample teacher data
   const teacherName = 'Alex';
-  const teacherAvatar = '/assets/avatar.png';
+  const teacherAvatar = getAssetPath('/assets/avatar.png');
 
   // Sample courses created by the teacher
   const teacherCourses = [

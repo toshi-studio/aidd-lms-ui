@@ -147,7 +147,7 @@ const HomePage: React.FC = () => {
           style={{
             color: 'white',
             backgroundImage:
-              'url(/assets/aidd-banner.webp)',
+              `url(${getAssetPath('/assets/aidd-banner.webp')})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'left center'

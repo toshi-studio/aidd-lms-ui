@@ -3,11 +3,12 @@ import { Theme, Box, Container, Flex, Grid, Heading, Text, Button, Card, IconBut
 import { PlusIcon, ImageIcon, VideoIcon, TextIcon, TrashIcon, DotsVerticalIcon, ArrowUpIcon, ArrowDownIcon } from '@radix-ui/react-icons';
 import Banner from '../components/Banner';
 import Sidebar from '../components/Sidebar';
+import { getAssetPath } from '../utils/assets';
 
 const CourseEditorPage: React.FC = () => {
   // Sample teacher data
   const teacherName = 'Alex';
-  const teacherAvatar = '/assets/avatar.png';
+  const teacherAvatar = getAssetPath('/assets/avatar.png');
 
   // Sample chapters for sidebar
   const chapters = [
