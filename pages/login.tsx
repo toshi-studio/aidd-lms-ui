@@ -1,6 +1,7 @@
 import React from 'react';
 import { Theme, Box, Container, Card, Flex, Heading, Text, Button } from '@radix-ui/themes';
 import Link from 'next/link';
+import { getAssetPath } from '../utils/assets';
 
 const LoginPage: React.FC = () => {
   return (
@@ -18,9 +19,9 @@ const LoginPage: React.FC = () => {
           <Card size="4">
             <Flex direction="column" gap="4">
               {/* Logo */}
-              <Flex justify="center" mb="2" style={{ backgroundImage: 'url(/assets/aidd-banner.webp)', backgroundSize: 'cover', backgroundPosition: 'left center', backgroundRepeat: 'no-repeat', padding: '10px', borderRadius: '10px' }}>
+              <Flex justify="center" mb="2" style={{ backgroundImage: `url(${getAssetPath('/assets/aidd-banner.webp')})`, backgroundSize: 'cover', backgroundPosition: 'left center', backgroundRepeat: 'no-repeat', padding: '10px', borderRadius: '10px' }}>
                 <img 
-                  src="/assets/logo.png" 
+                  src={getAssetPath('/assets/logo.png')} 
                   alt="AIDD LMS Logo" 
                   style={{ width: 'auto', height: '80px' }}
                 />

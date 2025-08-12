@@ -3,6 +3,7 @@ import { Theme, Box, Container, Flex, Grid, Heading, Text } from '@radix-ui/them
 import Banner from '../components/Banner';
 import Sidebar from '../components/Sidebar';
 import CourseCard from '../components/CourseCard';
+import { getAssetPath } from '../utils/assets';
 
 const DashboardStudentPage: React.FC = () => {
   // Sample student data
@@ -33,7 +34,7 @@ const DashboardStudentPage: React.FC = () => {
     {
       id: '1',
       title: 'Introduction to AI',
-      image: '/assets/placeholder1.jpg',
+      image: getAssetPath('/assets/placeholder1.jpg'),
       completionPercentage: 45,
       currentChapter: 'Chapter 3: Neural Networks',
       description: 'Learn the fundamentals of artificial intelligence'
@@ -41,7 +42,7 @@ const DashboardStudentPage: React.FC = () => {
     {
       id: '2',
       title: 'Web Development Basics',
-      image: '/assets/placeholder2.jpg',
+      image: getAssetPath('/assets/placeholder2.jpg'),
       completionPercentage: 20,
       currentChapter: 'Chapter 2: CSS Fundamentals',
       description: 'Master HTML, CSS, and JavaScript'
@@ -49,7 +50,7 @@ const DashboardStudentPage: React.FC = () => {
     {
       id: '3',
       title: 'Data Science Essentials',
-      image: '/assets/placeholder3.jpg',
+      image: getAssetPath('/assets/placeholder3.jpg'),
       completionPercentage: 80,
       currentChapter: 'Chapter 5: Data Visualization',
       description: 'Analyze data with Python and R'

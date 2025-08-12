@@ -2,6 +2,7 @@ import React from 'react';
 import { Flex, Button, Avatar, Box } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import { getAssetPath } from '../utils/assets';
 
 interface BannerProps {
   isLoggedIn?: boolean;
@@ -12,13 +13,13 @@ interface BannerProps {
 const Banner: React.FC<BannerProps> = ({ 
   isLoggedIn = false, 
   userName = 'User',
-  avatarUrl = '/assets/avatar.png' 
+  avatarUrl = getAssetPath('/assets/avatar.png') 
 }) => {
   return (
     <header
       style={{
         backgroundColor: '#020244',
-        backgroundImage: 'url(/assets/aidd-banner.webp)',
+        backgroundImage: `url(${getAssetPath('/assets/aidd-banner.webp')})`,
         backgroundSize: 'cover',
         backgroundPosition: 'left center',
         color: 'white',
@@ -35,7 +36,7 @@ const Banner: React.FC<BannerProps> = ({
       <Flex align="center" gap="4">
         <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
           <img 
-            src="/assets/logo.png" 
+            src={getAssetPath('/assets/logo.png')} 
             alt="AIDD LMS Logo" 
             style={{ height: '40px' }}
           />

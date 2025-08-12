@@ -4,6 +4,7 @@ import { PlusIcon } from '@radix-ui/react-icons';
 import Banner from '../components/Banner';
 import Sidebar from '../components/Sidebar';
 import CourseCard from '../components/CourseCard';
+import { getAssetPath } from '../utils/assets';
 
 const DashboardTeacherPage: React.FC = () => {
   // Sample teacher data
@@ -39,7 +40,7 @@ const DashboardTeacherPage: React.FC = () => {
     {
       id: '1',
       title: 'Introduction to AI',
-      image: '/assets/placeholder1.jpg',
+      image: getAssetPath('/assets/placeholder1.jpg'),
       totalChapters: 6,
       completedStudents: 34,
       totalStudents: 120
@@ -47,7 +48,7 @@ const DashboardTeacherPage: React.FC = () => {
     {
       id: '2',
       title: 'Advanced Machine Learning',
-      image: '/assets/placeholder2.jpg',
+      image: getAssetPath('/assets/placeholder2.jpg'),
       totalChapters: 8,
       completedStudents: 15,
       totalStudents: 87
@@ -55,7 +56,7 @@ const DashboardTeacherPage: React.FC = () => {
     {
       id: '4',
       title: 'Computer Vision Masterclass',
-      image: '/assets/placeholder4.jpg',
+      image: getAssetPath('/assets/placeholder4.jpg'),
       totalChapters: 10,
       completedStudents: 5,
       totalStudents: 45

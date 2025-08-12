@@ -4,22 +4,23 @@ import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/rea
 import Link from 'next/link';
 import Banner from '../components/Banner';
 import CourseCard from '../components/CourseCard';
+import { getAssetPath } from '../utils/assets';
 
 const HomePage: React.FC = () => {
   // Sample course data
   const courses = [
-    { id: '1', title: 'Introduction to AI', image: '/assets/placeholder1.jpg', description: 'Learn the fundamentals of artificial intelligence' },
-    { id: '2', title: 'Web Development Basics', image: '/assets/placeholder2.jpg', description: 'Master HTML, CSS, and JavaScript' },
-    { id: '3', title: 'Data Science Essentials', image: '/assets/placeholder3.jpg', description: 'Analyze data with Python and R' },
-    { id: '4', title: 'Mobile App Development', image: '/assets/placeholder4.jpg', description: 'Build apps for iOS and Android' },
-    { id: '5', title: 'Cloud Computing', image: '/assets/placeholder5.jpg', description: 'Deploy applications in the cloud' }
+    { id: '1', title: 'Introduction to AI', image: getAssetPath('/assets/placeholder1.jpg'), description: 'Learn the fundamentals of artificial intelligence' },
+    { id: '2', title: 'Web Development Basics', image: getAssetPath('/assets/placeholder2.jpg'), description: 'Master HTML, CSS, and JavaScript' },
+    { id: '3', title: 'Data Science Essentials', image: getAssetPath('/assets/placeholder3.jpg'), description: 'Analyze data with Python and R' },
+    { id: '4', title: 'Mobile App Development', image: getAssetPath('/assets/placeholder4.jpg'), description: 'Build apps for iOS and Android' },
+    { id: '5', title: 'Cloud Computing', image: getAssetPath('/assets/placeholder5.jpg'), description: 'Deploy applications in the cloud' }
   ];
 
   // Sample testimonials
   const testimonials = [
-    { name: 'Sarah Johnson', avatar: '/assets/avatar.png', quote: 'AIDD LMS transformed how I learn. The AI-driven approach makes complex topics easy to understand.' },
-    { name: 'Michael Chen', avatar: '/assets/avatar.png', quote: 'As a teacher, I love how easy it is to create and manage courses. My students are more engaged than ever!' },
-    { name: 'Emma Williams', avatar: '/assets/avatar.png', quote: 'The progress tracking and personalized learning paths helped me achieve my goals faster.' }
+    { name: 'Sarah Johnson', avatar: getAssetPath('/assets/avatar.png'), quote: 'AIDD LMS transformed how I learn. The AI-driven approach makes complex topics easy to understand.' },
+    { name: 'Michael Chen', avatar: getAssetPath('/assets/avatar.png'), quote: 'As a teacher, I love how easy it is to create and manage courses. My students are more engaged than ever!' },
+    { name: 'Emma Williams', avatar: getAssetPath('/assets/avatar.png'), quote: 'The progress tracking and personalized learning paths helped me achieve my goals faster.' }
   ];
 
   return (
