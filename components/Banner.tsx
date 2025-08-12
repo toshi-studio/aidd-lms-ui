@@ -15,13 +15,8 @@ const Banner: React.FC<BannerProps> = ({
   avatarUrl = '/assets/avatar.png' 
 }) => {
   return (
-    <Flex 
-      as="header" 
-      align="center" 
-      justify="between" 
-      px="4" 
-      py="3" 
-      style={{ 
+    <header
+      style={{
         backgroundColor: '#020244',
         backgroundImage: 'url(/assets/aidd-banner.webp)',
         backgroundSize: 'cover',
@@ -30,6 +25,12 @@ const Banner: React.FC<BannerProps> = ({
         height: '64px'
       }}
     >
+      <Flex
+        align="center"
+        justify="between"
+        px="4"
+        py="3"
+      >
       {/* Logo Section */}
       <Flex align="center" gap="4">
         <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -46,13 +47,16 @@ const Banner: React.FC<BannerProps> = ({
         {/* Search */}
         <Flex align="center" gap="2" style={{ backgroundColor: 'rgba(255,255,255,0.1)', padding: '8px 16px', borderRadius: '4px' }}>
           <MagnifyingGlassIcon />
-          <Box as="input" placeholder="Search courses..." style={{ 
-            background: 'none', 
-            border: 'none', 
-            color: 'white',
-            outline: 'none',
-            width: '200px'
-          }} />
+          <input
+            placeholder="Search courses..."
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'white',
+              outline: 'none',
+              width: '200px'
+            }}
+          />
         </Flex>
 
         {/* Auth Section */}
@@ -77,7 +81,8 @@ const Banner: React.FC<BannerProps> = ({
           </Flex>
         )}
       </Flex>
-    </Flex>
+      </Flex>
+    </header>
   );
 };
 

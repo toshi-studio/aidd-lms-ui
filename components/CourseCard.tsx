@@ -90,7 +90,6 @@ const CourseCard: React.FC<CourseCardProps> = ({
             size="2"
             color="gray"
             style={{
-              display: 'block',
               marginBottom: '12px',
               minHeight: '40px',
               lineHeight: '20px',
