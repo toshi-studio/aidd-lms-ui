@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Theme, Box, Flex, Grid, Heading, Text, Button, Card, IconButton, Separator, Tabs, Badge, Select, TextField, TextArea } from '@radix-ui/themes';
+import { Theme, Box, Flex, Grid, Heading, Text, Button, Card, IconButton, Separator, Badge, Select, TextField, TextArea } from '@radix-ui/themes';
 import { PlusIcon, ImageIcon, VideoIcon, TextIcon, TrashIcon, DotsVerticalIcon, ArrowUpIcon, ArrowDownIcon, Pencil1Icon, ChevronDownIcon, ChevronRightIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
 import Banner from '../components/Banner';
 import { getAssetPath } from '../utils/assets';
@@ -11,6 +11,7 @@ const CourseEditorPage: React.FC = () => {
   const [selectedChapter, setSelectedChapter] = useState('chapter-1');
   const [selectedLesson, setSelectedLesson] = useState('lesson-1');
   const [expandedChapters, setExpandedChapters] = useState<string[]>(['chapter-1', 'chapter-2', 'chapter-3']);
+  const [selectedView, setSelectedView] = useState<'course' | 'chapter' | 'lesson'>('course');
 
   // Sample data structure for course > chapters > lessons
   const courseData = {
@@ -65,6 +66,15 @@ const CourseEditorPage: React.FC = () => {
     );
   };
 
+  const toggleAllChapters = () => {
+    const allChapterIds = courseData.chapters.map(ch => ch.id);
+    if (expandedChapters.length === allChapterIds.length) {
+      setExpandedChapters([]);
+    } else {
+      setExpandedChapters(allChapterIds);
+    }
+  };
+
   const currentChapter = courseData.chapters.find(ch => ch.id === selectedChapter);
   const currentLesson = currentChapter?.lessons.find(l => l.id === selectedLesson);
 
@@ -88,10 +98,53 @@ const CourseEditorPage: React.FC = () => {
           >
             {/* Course Title Header */}
             <Box p="3" style={{ backgroundColor: 'white', borderBottom: '1px solid var(--gray-5)' }}>
-              <Text size="3" weight="bold" style={{ display: 'block' }}>
-                {courseData.title}
-              </Text>
-              <Text size="1" color="gray">Course Structure</Text>
+              <Flex align="center" justify="between">
+                <Box>
+                  <Text 
+                    size="3" 
+                    weight="bold" 
+                    style={{ 
+                      display: 'block', 
+                      cursor: 'pointer',
+                      color: selectedView === 'course' ? 'var(--violet-9)' : 'inherit'
+                    }}
+                    onClick={() => setSelectedView('course')}
+                  >
+                    {courseData.title}
+                  </Text>
+                  <Text size="1" color="gray">Course Structure</Text>
+                </Box>
+                <IconButton 
+                  size="1" 
+                  variant="ghost"
+                  onClick={() => setSelectedView('course')}
+                  style={{ color: selectedView === 'course' ? 'var(--violet-9)' : 'var(--gray-9)' }}
+                >
+                  <Pencil1Icon />
+                </IconButton>
+              </Flex>
+            </Box>
+
+            {/* Expand/Collapse Controls */}
+            <Box p="2" style={{ backgroundColor: 'var(--gray-1)', borderBottom: '1px solid var(--gray-4)' }}>
+              <Button 
+                size="1" 
+                variant="ghost" 
+                onClick={toggleAllChapters}
+                style={{ width: '100%', justifyContent: 'center' }}
+              >
+                {expandedChapters.length === courseData.chapters.length ? (
+                  <>
+                    <ChevronDownIcon />
+                    <Text size="1" ml="1">Collapse All Chapters</Text>
+                  </>
+                ) : (
+                  <>
+                    <ChevronRightIcon />
+                    <Text size="1" ml="1">Expand All Chapters</Text>
+                  </>
+                )}
+              </Button>
             </Box>
 
             {/* Chapters and Lessons Tree */}
@@ -122,8 +175,15 @@ const CourseEditorPage: React.FC = () => {
                       <Text 
                         size="2" 
                         weight="bold"
-                        style={{ flex: 1, cursor: 'pointer' }}
-                        onClick={() => setSelectedChapter(chapter.id)}
+                        style={{ 
+                          flex: 1, 
+                          cursor: 'pointer',
+                          color: selectedView === 'chapter' && selectedChapter === chapter.id ? 'var(--violet-9)' : 'inherit'
+                        }}
+                        onClick={() => {
+                          setSelectedChapter(chapter.id);
+                          setSelectedView('chapter');
+                        }}
                       >
                         {chapter.title}
                       </Text>
@@ -152,6 +212,7 @@ const CourseEditorPage: React.FC = () => {
                           onClick={() => {
                             setSelectedChapter(chapter.id);
                             setSelectedLesson(lesson.id);
+                            setSelectedView('lesson');
                           }}
                         >
                           <Flex align="center" gap="2">
@@ -162,7 +223,14 @@ const CourseEditorPage: React.FC = () => {
                                 opacity: 0.6
                               }} 
                             />
-                            <Text size="2">{lesson.title}</Text>
+                            <Text 
+                              size="2" 
+                              style={{ 
+                                color: selectedView === 'lesson' && selectedLesson === lesson.id ? 'var(--violet-9)' : 'inherit'
+                              }}
+                            >
+                              {lesson.title}
+                            </Text>
                             <IconButton size="1" variant="ghost" ml="auto">
                               <DotsHorizontalIcon />
                             </IconButton>
@@ -205,34 +273,10 @@ const CourseEditorPage: React.FC = () => {
             <Box style={{ padding: '0 16px', width: '100%' }}>
               <Heading size="6" mb="4" mt="4">Course Editor: {courseData.title}</Heading>
               
-              <Tabs.Root defaultValue="course">
-                <Tabs.List size="2">
-                  <Tabs.Trigger value="course">
-                    <Flex align="center" gap="2">
-                      Course Details
-                      <Badge color="green" variant="soft">Active</Badge>
-                    </Flex>
-                  </Tabs.Trigger>
-                  <Tabs.Trigger value="chapters">
-                    <Flex align="center" gap="2">
-                      Chapters
-                      <Badge color="gray" variant="soft">{courseData.chapters.length}</Badge>
-                    </Flex>
-                  </Tabs.Trigger>
-                  <Tabs.Trigger value="lessons">
-                    <Flex align="center" gap="2">
-                      Lessons
-                      <Badge color="gray" variant="soft">
-                        {courseData.chapters.reduce((acc, ch) => acc + ch.lessons.length, 0)}
-                      </Badge>
-                    </Flex>
-                  </Tabs.Trigger>
-                </Tabs.List>
-
-                {/* Course Details Tab */}
-                <Tabs.Content value="course">
-                  <Card size="3" mt="4">
-                    <Heading size="5" mb="4">Course Information</Heading>
+              {/* Dynamic Content Based on Sidebar Selection */}
+              {selectedView === 'course' && (
+                <Card size="3">
+                  <Heading size="5" mb="4">Course Information</Heading>
                     
                     <Grid columns="2" gap="6">
                       <Box>
@@ -371,193 +415,115 @@ const CourseEditorPage: React.FC = () => {
                         Save & Publish
                       </Button>
                     </Flex>
-                  </Card>
-                </Tabs.Content>
-
-                {/* Chapters Tab */}
-                <Tabs.Content value="chapters">
-                  <Grid columns="2" gap="4" mt="4">
-                    {/* Left Column: Chapter List */}
-                    <Card size="3">
-                      <Flex justify="between" align="center" mb="4">
-                        <Heading size="5">Course Chapters</Heading>
-                        <Button color="violet" size="2">
-                          <PlusIcon />
-                          Add Chapter
-                        </Button>
-                      </Flex>
-
-                      <Text size="2" color="gray" mb="4">
-                        Organize your course content into logical chapters. Each chapter can contain multiple lessons.
-                      </Text>
-
-                      <Flex direction="column" gap="3">
-                        {courseData.chapters.map((chapter) => (
-                          <Card 
-                            key={chapter.id} 
-                            size="2"
-                            style={{
-                              cursor: 'pointer',
-                              backgroundColor: selectedChapter === chapter.id ? 'var(--violet-3)' : undefined,
-                              borderColor: selectedChapter === chapter.id ? 'var(--violet-6)' : undefined,
-                              borderWidth: selectedChapter === chapter.id ? '2px' : '1px'
-                            }}
-                            onClick={() => setSelectedChapter(chapter.id)}
-                          >
-                            <Flex align="center" gap="3">
-                              {/* Drag handle */}
-                              <IconButton size="2" variant="ghost" style={{ cursor: 'move' }}>
-                                <DotsVerticalIcon />
-                              </IconButton>
-
-                              {/* Chapter number */}
-                              <Badge size="2" color="violet" variant="soft">
-                                {chapter.order}
-                              </Badge>
-
-                              {/* Chapter info */}
-                              <Box style={{ flex: 1 }}>
-                                <Flex align="center" gap="2" mb="1">
-                                  <Text size="3" weight={selectedChapter === chapter.id ? 'bold' : 'medium'}>
-                                    {chapter.title}
-                                  </Text>
-                                  <Badge color="gray" variant="soft" size="1">
-                                    {chapter.lessons.length} lessons
-                                  </Badge>
-                                </Flex>
-                                <Text size="2" color="gray">
-                                  {chapter.lessons.map(l => l.title).join(' • ')}
-                                </Text>
-                              </Box>
-
-                              {/* Actions */}
-                              <Flex gap="2">
-                                <IconButton size="2" variant="ghost">
-                                  <ArrowUpIcon />
-                                </IconButton>
-                                <IconButton size="2" variant="ghost">
-                                  <ArrowDownIcon />
-                                </IconButton>
-                                <IconButton size="2" variant="ghost">
-                                  <Pencil1Icon />
-                                </IconButton>
-                                <IconButton size="2" variant="ghost" color="red">
-                                  <TrashIcon />
-                                </IconButton>
-                              </Flex>
-                            </Flex>
-                          </Card>
-                        ))}
-                      </Flex>
-                    </Card>
-
-                    {/* Right Column: Chapter Editor */}
-                    <Card size="3">
-                      <Heading size="5" mb="4">Edit Chapter</Heading>
-                      
-                      {currentChapter ? (
-                        <>
-                          <Grid columns="2" gap="4" mb="4">
-                            <Box>
-                              <Text size="2" weight="medium" style={{ display: 'block', marginBottom: '8px' }}>
-                                Chapter Title
-                              </Text>
-                              <TextField.Root
-                                size="3"
-                                placeholder="Enter chapter title"
-                                defaultValue={currentChapter.title}
-                              />
-                            </Box>
-                            <Box>
-                              <Text size="2" weight="medium" style={{ display: 'block', marginBottom: '8px' }}>
-                                Chapter Order
-                              </Text>
-                              <TextField.Root
-                                size="3"
-                                type="number"
-                                placeholder="1"
-                                defaultValue={currentChapter.order.toString()}
-                              />
-                            </Box>
-                          </Grid>
-
-                          <Box mb="4">
+                </Card>
+              )}
+              
+              {selectedView === 'chapter' && (
+                <Card size="3">
+                  <Heading size="5" mb="4">Edit Chapter</Heading>
+                  
+                  {currentChapter ? (
+                      <>
+                        <Grid columns="2" gap="4" mb="4">
+                          <Box>
                             <Text size="2" weight="medium" style={{ display: 'block', marginBottom: '8px' }}>
-                              Chapter Description (Optional)
+                              Chapter Title
                             </Text>
-                            <TextArea
+                            <TextField.Root
                               size="3"
-                              placeholder="Enter chapter description or learning objectives..."
-                              style={{ minHeight: '120px' }}
+                              placeholder="Enter chapter title"
+                              defaultValue={currentChapter.title}
                             />
                           </Box>
-
-                          <Separator size="4" mb="4" />
-
-                          <Box mb="4">
-                            <Text size="3" weight="medium" mb="3">Lessons in this Chapter</Text>
-                            <Flex direction="column" gap="2">
-                              {currentChapter.lessons.map((lesson) => (
-                                <Card key={lesson.id} size="2">
-                                  <Flex align="center" gap="3">
-                                    <IconButton size="1" variant="ghost" style={{ cursor: 'move' }}>
-                                      <DotsVerticalIcon />
-                                    </IconButton>
-                                    <Badge size="1" variant="soft">#{lesson.order}</Badge>
-                                    <Text size="2" style={{ flex: 1 }}>{lesson.title}</Text>
-                                    <Flex gap="1">
-                                      <IconButton size="1" variant="ghost">
-                                        <ArrowUpIcon />
-                                      </IconButton>
-                                      <IconButton size="1" variant="ghost">
-                                        <ArrowDownIcon />
-                                      </IconButton>
-                                      <IconButton size="1" variant="ghost">
-                                        <Pencil1Icon />
-                                      </IconButton>
-                                      <IconButton size="1" variant="ghost" color="red">
-                                        <TrashIcon />
-                                      </IconButton>
-                                    </Flex>
-                                  </Flex>
-                                </Card>
-                              ))}
-                            </Flex>
-                            <Button size="2" variant="soft" color="violet" mt="3" style={{ width: '100%' }}>
-                              <PlusIcon />
-                              Add Lesson to Chapter
-                            </Button>
+                          <Box>
+                            <Text size="2" weight="medium" style={{ display: 'block', marginBottom: '8px' }}>
+                              Chapter Order
+                            </Text>
+                            <TextField.Root
+                              size="3"
+                              type="number"
+                              placeholder="1"
+                              defaultValue={currentChapter.order.toString()}
+                            />
                           </Box>
+                        </Grid>
 
-                          <Flex gap="3" justify="end">
-                            <Button size="3" variant="soft" color="gray">
-                              Cancel
-                            </Button>
-                            <Button size="3" color="violet">
-                              Save Chapter
-                            </Button>
+                        <Box mb="4">
+                          <Text size="2" weight="medium" style={{ display: 'block', marginBottom: '8px' }}>
+                            Chapter Description (Optional)
+                          </Text>
+                          <TextArea
+                            size="3"
+                            placeholder="Enter chapter description or learning objectives..."
+                            style={{ minHeight: '120px' }}
+                          />
+                        </Box>
+
+                        <Separator size="4" mb="4" />
+
+                        <Box mb="4">
+                          <Text size="3" weight="medium" mb="3">Lessons in this Chapter</Text>
+                          <Flex direction="column" gap="2">
+                            {currentChapter.lessons.map((lesson) => (
+                              <Card key={lesson.id} size="2">
+                                <Flex align="center" gap="3">
+                                  <IconButton size="1" variant="ghost" style={{ cursor: 'move' }}>
+                                    <DotsVerticalIcon />
+                                  </IconButton>
+                                  <Badge size="1" variant="soft">#{lesson.order}</Badge>
+                                  <Text size="2" style={{ flex: 1 }}>{lesson.title}</Text>
+                                  <Flex gap="1">
+                                    <IconButton size="1" variant="ghost">
+                                      <ArrowUpIcon />
+                                    </IconButton>
+                                    <IconButton size="1" variant="ghost">
+                                      <ArrowDownIcon />
+                                    </IconButton>
+                                    <IconButton size="1" variant="ghost">
+                                      <Pencil1Icon />
+                                    </IconButton>
+                                    <IconButton size="1" variant="ghost" color="red">
+                                      <TrashIcon />
+                                    </IconButton>
+                                  </Flex>
+                                </Flex>
+                              </Card>
+                            ))}
                           </Flex>
-                        </>
-                      ) : (
-                        <Flex 
-                          align="center" 
-                          justify="center" 
-                          style={{ 
-                            minHeight: '400px',
-                            border: '1px dashed var(--gray-6)',
-                            borderRadius: '8px',
-                            backgroundColor: 'var(--gray-2)'
-                          }}
-                        >
-                          <Text size="3" color="gray">Select a chapter to edit</Text>
-                        </Flex>
-                      )}
-                    </Card>
-                  </Grid>
-                </Tabs.Content>
+                          <Button size="2" variant="soft" color="violet" mt="3" style={{ width: '100%' }}>
+                            <PlusIcon />
+                            Add Lesson to Chapter
+                          </Button>
+                        </Box>
 
-                {/* Lessons Tab */}
-                <Tabs.Content value="lessons">
+                        <Flex gap="3" justify="end">
+                          <Button size="3" variant="soft" color="gray">
+                            Cancel
+                          </Button>
+                          <Button size="3" color="violet">
+                            Save Chapter
+                          </Button>
+                        </Flex>
+                      </>
+                    ) : (
+                      <Flex 
+                        align="center" 
+                        justify="center" 
+                        style={{ 
+                          minHeight: '400px',
+                          border: '1px dashed var(--gray-6)',
+                          borderRadius: '8px',
+                          backgroundColor: 'var(--gray-2)'
+                        }}
+                      >
+                        <Text size="3" color="gray">Select a chapter to edit</Text>
+                      </Flex>
+                  )}
+                </Card>
+              )}
+              
+              {selectedView === 'lesson' && (
+
                   <Grid columns="2" gap="4" mt="4">
                     {/* Left Column: Lesson Editor */}
                     <Card size="3">
@@ -821,8 +787,7 @@ const CourseEditorPage: React.FC = () => {
                       )}
                     </Card>
                   </Grid>
-                </Tabs.Content>
-              </Tabs.Root>
+              )}
             </Box>
           </Box>
         </Flex>
