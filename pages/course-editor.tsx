@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Theme, Box, Flex, Grid, Heading, Text, Button, Card, IconButton, Separator, Badge, Select, TextField, TextArea } from '@radix-ui/themes';
-import { PlusIcon, ImageIcon, VideoIcon, TextIcon, TrashIcon, DotsVerticalIcon, ArrowUpIcon, ArrowDownIcon, Pencil1Icon, ChevronDownIcon, ChevronRightIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { PlusIcon, ImageIcon, VideoIcon, TrashIcon, DotsVerticalIcon, ArrowUpIcon, ArrowDownIcon, Pencil1Icon, ChevronDownIcon, ChevronRightIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
 import Banner from '../components/Banner';
 import { getAssetPath } from '../utils/assets';
 
@@ -50,13 +50,6 @@ const CourseEditorPage: React.FC = () => {
     ]
   };
 
-  // Sample content blocks for current lesson
-  const lessonContent = [
-    { id: 'block-1', type: 'text', content: 'Artificial Intelligence (AI) is the simulation of human intelligence in machines...' },
-    { id: 'block-2', type: 'image', content: 'ai-concept.jpg' },
-    { id: 'block-3', type: 'text', content: 'AI systems are designed to perform tasks that typically require human intelligence...' },
-    { id: 'block-4', type: 'video', content: 'intro-to-ai.mp4' }
-  ];
 
   const toggleChapter = (chapterId: string) => {
     setExpandedChapters(prev => 
@@ -531,7 +524,7 @@ const CourseEditorPage: React.FC = () => {
                         {currentLesson && (
                           <>
                             {/* Lesson Title */}
-                            <Box mb="3">
+                            <Box mb="4">
                               <Text size="2" weight="medium" style={{ display: 'block', marginBottom: '8px' }}>
                                 Lesson Title
                               </Text>
@@ -542,106 +535,49 @@ const CourseEditorPage: React.FC = () => {
                               />
                             </Box>
 
-                            {/* Add Content Buttons */}
-                            <Flex gap="2" mb="3">
-                              <Button size="2" variant="soft" color="violet">
-                                <TextIcon />
-                                Add Text
-                              </Button>
-                              <Button size="2" variant="soft" color="violet">
-                                <ImageIcon />
-                                Add Image
-                              </Button>
-                              <Button size="2" variant="soft" color="violet">
-                                <VideoIcon />
-                                Add Video
-                              </Button>
-                            </Flex>
+                            {/* Lesson Content - Markdown Editor */}
+                            <Box mb="4">
+                              <Text size="2" weight="medium" style={{ display: 'block', marginBottom: '8px' }}>
+                                Lesson Content (Markdown Editor)
+                              </Text>
+                              <TextArea
+                                size="3"
+                                placeholder="Write your lesson content here...&#10;&#10;## Formatting supported:&#10;- **Bold text**&#10;- *Italic text*&#10;- [Links](url)&#10;- ![Images](image-url)&#10;- Code blocks with ```&#10;- Lists and more..."
+                                defaultValue="Artificial Intelligence (AI) is the simulation of human intelligence in machines that are programmed to think and learn like humans.&#10;&#10;## Key Concepts&#10;&#10;AI systems are designed to perform tasks that typically require human intelligence, such as:&#10;&#10;- Visual perception&#10;- Speech recognition&#10;- Decision-making&#10;- Language translation&#10;&#10;### Machine Learning&#10;&#10;Machine learning is a subset of AI that enables systems to learn and improve from experience without being explicitly programmed."
+                                style={{ minHeight: '400px', fontFamily: 'monospace' }}
+                              />
+                              <Text size="1" color="gray" style={{ display: 'block', marginTop: '4px' }}>
+                                You can upload images directly through the markdown editor
+                              </Text>
+                            </Box>
 
-                            <Separator size="4" mb="3" />
-
-                            {/* Content Blocks */}
-                            <Text size="2" weight="medium" mb="2">Lesson Content</Text>
-                            <Flex direction="column" gap="3">
-                              {lessonContent.map((block, index) => (
-                                <Card key={block.id} size="3">
-                                  <Flex justify="between" align="start" mb="2">
-                                    <Flex align="center" gap="2">
-                                      {block.type === 'text' && <TextIcon width="16" height="16" />}
-                                      {block.type === 'video' && <VideoIcon width="16" height="16" />}
-                                      {block.type === 'image' && <ImageIcon width="16" height="16" />}
-                                      <Text size="2" weight="medium">
-                                        {block.type === 'text' ? 'Text Block' : 
-                                         block.type === 'video' ? 'Video Block' : 
-                                         'Image Block'} #{index + 1}
-                                      </Text>
-                                    </Flex>
-                                    <Flex gap="1">
-                                      <IconButton size="1" variant="ghost">
-                                        <ArrowUpIcon />
-                                      </IconButton>
-                                      <IconButton size="1" variant="ghost">
-                                        <ArrowDownIcon />
-                                      </IconButton>
-                                      <IconButton size="1" variant="ghost" color="red">
-                                        <TrashIcon />
-                                      </IconButton>
-                                    </Flex>
-                                  </Flex>
-
-                                  {/* Content based on type */}
-                                  {block.type === 'text' && (
-                                    <TextArea
-                                      size="2"
-                                      placeholder="Enter text content (Markdown supported)..."
-                                      defaultValue={block.content}
-                                      style={{ minHeight: '100px' }}
-                                    />
-                                  )}
-                                  {block.type === 'video' && (
-                                    <Box 
-                                      style={{ 
-                                        border: '1px solid var(--gray-6)',
-                                        borderRadius: '6px',
-                                        padding: '20px',
-                                        textAlign: 'center',
-                                        backgroundColor: 'var(--gray-2)'
-                                      }}
-                                    >
-                                      <VideoIcon width="24" height="24" style={{ color: 'var(--gray-9)' }} />
-                                      <Text size="2" color="gray" style={{ display: 'block', marginTop: '8px' }}>
-                                        Click to upload video
-                                      </Text>
-                                      <Text size="1" color="gray" style={{ display: 'block', marginTop: '4px' }}>
-                                        MP4, WebM, or Ogg (max 500MB)
-                                      </Text>
-                                    </Box>
-                                  )}
-                                  {block.type === 'image' && (
-                                    <Box 
-                                      style={{ 
-                                        border: '1px solid var(--gray-6)',
-                                        borderRadius: '6px',
-                                        padding: '20px',
-                                        textAlign: 'center',
-                                        backgroundColor: 'var(--gray-2)'
-                                      }}
-                                    >
-                                      <ImageIcon width="24" height="24" style={{ color: 'var(--gray-9)' }} />
-                                      <Text size="2" color="gray" style={{ display: 'block', marginTop: '8px' }}>
-                                        Click to upload image
-                                      </Text>
-                                      <Text size="1" color="gray" style={{ display: 'block', marginTop: '4px' }}>
-                                        JPG, PNG, or GIF (max 10MB)
-                                      </Text>
-                                    </Box>
-                                  )}
-                                </Card>
-                              ))}
-                            </Flex>
+                            {/* Video Upload */}
+                            <Box mb="4">
+                              <Text size="2" weight="medium" style={{ display: 'block', marginBottom: '8px' }}>
+                                Lesson Video (Optional)
+                              </Text>
+                              <Box 
+                                style={{ 
+                                  border: '2px dashed var(--gray-6)',
+                                  borderRadius: '8px',
+                                  padding: '40px',
+                                  textAlign: 'center',
+                                  backgroundColor: 'var(--gray-2)',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                <VideoIcon width="32" height="32" style={{ color: 'var(--gray-9)' }} />
+                                <Text size="2" color="gray" style={{ display: 'block', marginTop: '12px' }}>
+                                  Click to upload video
+                                </Text>
+                                <Text size="1" color="gray" style={{ display: 'block', marginTop: '4px' }}>
+                                  MP4, WebM, or Ogg (max 500MB)
+                                </Text>
+                              </Box>
+                            </Box>
 
                             {/* Save Actions */}
-                            <Flex gap="3" mt="4" justify="end">
+                            <Flex gap="3" justify="end">
                               <Button variant="soft" color="gray" size="3">
                                 Save Draft
                               </Button>
@@ -678,88 +614,84 @@ const CourseEditorPage: React.FC = () => {
                           
                           <Separator size="4" mb="4" />
                           
-                          {/* Preview Content */}
-                          <Flex direction="column" gap="4">
-                            {lessonContent.map((block) => (
-                              <Box key={`preview-${block.id}`}>
-                                {block.type === 'text' && (
-                                  <Text size="3" style={{ lineHeight: '1.7', color: 'var(--gray-12)' }}>
-                                    {block.content}
-                                  </Text>
-                                )}
-                                {block.type === 'image' && (
-                                  <Box 
-                                    style={{ 
-                                      width: '100%',
-                                      height: '300px',
-                                      borderRadius: '8px',
-                                      backgroundColor: 'var(--gray-3)',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'center'
-                                    }}
-                                  >
-                                    <Flex direction="column" align="center" gap="2">
-                                      <ImageIcon width="48" height="48" style={{ color: 'var(--gray-7)' }} />
-                                      <Text size="2" color="gray">Image placeholder</Text>
-                                    </Flex>
-                                  </Box>
-                                )}
-                                {block.type === 'video' && (
-                                  <Box 
-                                    style={{ 
-                                      width: '100%',
-                                      height: '400px',
-                                      borderRadius: '8px',
-                                      backgroundColor: 'var(--gray-12)',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                      position: 'relative'
-                                    }}
-                                  >
-                                    <Box 
-                                      style={{ 
-                                        width: '80px',
-                                        height: '80px',
-                                        borderRadius: '50%',
-                                        backgroundColor: 'rgba(255,255,255,0.2)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        cursor: 'pointer'
-                                      }}
-                                    >
-                                      <Box
-                                        style={{
-                                          width: '0',
-                                          height: '0',
-                                          borderLeft: '30px solid white',
-                                          borderTop: '20px solid transparent',
-                                          borderBottom: '20px solid transparent',
-                                          marginLeft: '8px'
-                                        }}
-                                      />
-                                    </Box>
-                                    <Text 
-                                      size="1" 
-                                      style={{ 
-                                        position: 'absolute',
-                                        bottom: '16px',
-                                        left: '16px',
-                                        color: 'white',
-                                        backgroundColor: 'rgba(0,0,0,0.6)',
-                                        padding: '4px 8px',
-                                        borderRadius: '4px'
-                                      }}
-                                    >
-                                      Video: {block.content}
-                                    </Text>
-                                  </Box>
-                                )}
-                              </Box>
-                            ))}
-                          </Flex>
+                          {/* Preview Content - Rendered Markdown */}
+                          <Box mb="4">
+                            <Text size="3" style={{ lineHeight: '1.8' }}>
+                              Artificial Intelligence (AI) is the simulation of human intelligence in machines that are programmed to think and learn like humans.
+                            </Text>
+                            
+                            <Heading size="4" mt="4" mb="2">Key Concepts</Heading>
+                            <Text size="3" style={{ lineHeight: '1.8' }}>
+                              AI systems are designed to perform tasks that typically require human intelligence, such as:
+                            </Text>
+                            
+                            <Box ml="3" mt="2">
+                              <Text size="3" style={{ lineHeight: '1.8' }}>
+                                • Visual perception<br />
+                                • Speech recognition<br />
+                                • Decision-making<br />
+                                • Language translation
+                              </Text>
+                            </Box>
+                            
+                            <Heading size="5" mt="4" mb="2">Machine Learning</Heading>
+                            <Text size="3" style={{ lineHeight: '1.8' }}>
+                              Machine learning is a subset of AI that enables systems to learn and improve from experience without being explicitly programmed.
+                            </Text>
+                          </Box>
+
+                          {/* Video Player Placeholder */}
+                          <Box 
+                            style={{ 
+                              width: '100%',
+                              height: '400px',
+                              borderRadius: '8px',
+                              backgroundColor: 'var(--gray-12)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              position: 'relative',
+                              marginTop: '24px'
+                            }}
+                          >
+                            <Box 
+                              style={{ 
+                                width: '80px',
+                                height: '80px',
+                                borderRadius: '50%',
+                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <Box
+                                style={{
+                                  width: '0',
+                                  height: '0',
+                                  borderLeft: '30px solid white',
+                                  borderTop: '20px solid transparent',
+                                  borderBottom: '20px solid transparent',
+                                  marginLeft: '8px'
+                                }}
+                              />
+                            </Box>
+                            <Text 
+                              size="1" 
+                              style={{ 
+                                position: 'absolute',
+                                bottom: '16px',
+                                left: '16px',
+                                color: 'white',
+                                backgroundColor: 'rgba(0,0,0,0.6)',
+                                padding: '4px 8px',
+                                borderRadius: '4px'
+                              }}
+                            >
+                              Lesson Video
+                            </Text>
+                          </Box>
 
                           {/* Navigation Footer */}
                           <Flex justify="between" mt="8" pt="4" style={{ borderTop: '1px solid var(--gray-4)' }}>
