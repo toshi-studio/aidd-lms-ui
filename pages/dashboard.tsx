@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Theme, Box, Flex, Grid, Heading, Text, Card, Badge, Button } from '@radix-ui/themes';
-import { PlusIcon, PersonIcon, BackpackIcon, ReaderIcon } from '@radix-ui/react-icons';
+import { PlusIcon, PersonIcon, BackpackIcon } from '@radix-ui/react-icons';
 import Banner from '../components/Banner';
 import Sidebar from '../components/Sidebar';
 import CourseCard from '../components/CourseCard';
@@ -141,47 +141,72 @@ const DashboardPage: React.FC = () => {
                 </Flex>
               </Flex>
 
-              {/* Tab-style navigation */}
-              <Box mb="6">
-                <Flex style={{ borderBottom: '2px solid var(--gray-6)' }}>
-                  <Button 
-                    variant="ghost"
+              {/* Minimal tab navigation */}
+              <Box mb="4">
+                <Flex style={{ borderBottom: '1px solid var(--gray-5)' }}>
+                  <Box 
                     onClick={() => setActiveTab('student')}
                     style={{
-                      borderRadius: 0,
-                      borderBottom: activeTab === 'student' ? '2px solid var(--blue-9)' : 'none',
-                      color: activeTab === 'student' ? 'var(--blue-9)' : 'var(--gray-10)',
-                      backgroundColor: 'transparent',
-                      padding: '12px 16px'
+                      borderBottom: activeTab === 'student' ? '1px solid var(--blue-9)' : 'none',
+                      color: activeTab === 'student' ? 'var(--blue-9)' : 'var(--gray-9)',
+                      padding: '8px 12px',
+                      cursor: 'pointer',
+                      transition: 'color 0.2s ease',
+                      ':hover': {
+                        color: activeTab === 'student' ? 'var(--blue-9)' : 'var(--gray-11)'
+                      }
+                    }}
+                    onMouseEnter={(e) => {
+                      if (activeTab !== 'student') {
+                        e.currentTarget.style.color = 'var(--gray-11)'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (activeTab !== 'student') {
+                        e.currentTarget.style.color = 'var(--gray-9)'
+                      }
                     }}
                   >
                     <Flex gap="2" align="center">
-                      <BackpackIcon />
-                      My Learning ({studentCoursesData.length})
+                      <BackpackIcon width="16" height="16" />
+                      <Text size="3" weight={activeTab === 'student' ? 'medium' : 'regular'}>
+                        My Learning ({studentCoursesData.length})
+                      </Text>
                     </Flex>
-                  </Button>
-                  <Button 
-                    variant="ghost"
+                  </Box>
+                  <Box 
                     onClick={() => setActiveTab('teacher')}
                     style={{
-                      borderRadius: 0,
-                      borderBottom: activeTab === 'teacher' ? '2px solid var(--violet-9)' : 'none',
-                      color: activeTab === 'teacher' ? 'var(--violet-9)' : 'var(--gray-10)',
-                      backgroundColor: 'transparent',
-                      padding: '12px 16px'
+                      borderBottom: activeTab === 'teacher' ? '1px solid var(--violet-9)' : 'none',
+                      color: activeTab === 'teacher' ? 'var(--violet-9)' : 'var(--gray-9)',
+                      padding: '8px 12px',
+                      cursor: 'pointer',
+                      transition: 'color 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (activeTab !== 'teacher') {
+                        e.currentTarget.style.color = 'var(--gray-11)'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (activeTab !== 'teacher') {
+                        e.currentTarget.style.color = 'var(--gray-9)'
+                      }
                     }}
                   >
                     <Flex gap="2" align="center">
-                      <PersonIcon />
-                      My Teaching ({teacherCoursesData.length})
+                      <PersonIcon width="16" height="16" />
+                      <Text size="3" weight={activeTab === 'teacher' ? 'medium' : 'regular'}>
+                        My Teaching ({teacherCoursesData.length})
+                      </Text>
                     </Flex>
-                  </Button>
+                  </Box>
                 </Flex>
               </Box>
 
               {/* Student Content */}
               {activeTab === 'student' && (
-                  <Box pt="6">
+                  <Box pt="4">
                     <Flex justify="between" align="center" mb="4">
                       <Heading size="5">Courses I'm Taking</Heading>
                       <Button variant="soft" size="2">
@@ -245,7 +270,7 @@ const DashboardPage: React.FC = () => {
 
               {/* Teacher Content */}
               {activeTab === 'teacher' && (
-                  <Box pt="6">
+                  <Box pt="4">
                     <Flex justify="between" align="center" mb="4">
                       <Heading size="5">Courses I'm Teaching</Heading>
                       <Button size="2" onClick={() => window.location.href = '/course-editor'}>
