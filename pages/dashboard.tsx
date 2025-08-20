@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Theme, Box, Container, Flex, Grid, Heading, Text, Card, Badge, Button } from '@radix-ui/themes';
+import { Theme, Box, Flex, Grid, Heading, Text, Card, Badge, Button } from '@radix-ui/themes';
 import { PlusIcon, PersonIcon, BackpackIcon, ReaderIcon } from '@radix-ui/react-icons';
 import Banner from '../components/Banner';
 import Sidebar from '../components/Sidebar';
@@ -123,8 +123,8 @@ const DashboardPage: React.FC = () => {
           />
 
           {/* Main Content */}
-          <Box style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
-            <Container size="4">
+          <Box style={{ flex: 1, overflowY: 'auto' }}>
+            <Box style={{ padding: '24px', width: '100%' }}>
               {/* Header with role switch */}
               <Flex justify="between" align="center" mb="6">
                 <Heading size="7">Dashboard</Heading>
@@ -141,33 +141,43 @@ const DashboardPage: React.FC = () => {
                 </Flex>
               </Flex>
 
-              {/* Toggle buttons for switching between Student and Teacher views */}
-              <Flex gap="3" mb="6">
-                <Button 
-                  size="3" 
-                  variant={activeTab === 'student' ? 'solid' : 'soft'}
-                  color="blue"
-                  onClick={() => setActiveTab('student')}
-                  style={{ flex: 1 }}
-                >
-                  <Flex gap="2" align="center">
-                    <BackpackIcon />
-                    My Learning ({studentCoursesData.length})
-                  </Flex>
-                </Button>
-                <Button 
-                  size="3" 
-                  variant={activeTab === 'teacher' ? 'solid' : 'soft'}
-                  color="violet"
-                  onClick={() => setActiveTab('teacher')}
-                  style={{ flex: 1 }}
-                >
-                  <Flex gap="2" align="center">
-                    <PersonIcon />
-                    My Teaching ({teacherCoursesData.length})
-                  </Flex>
-                </Button>
-              </Flex>
+              {/* Tab-style navigation */}
+              <Box mb="6">
+                <Flex style={{ borderBottom: '2px solid var(--gray-6)' }}>
+                  <Button 
+                    variant="ghost"
+                    onClick={() => setActiveTab('student')}
+                    style={{
+                      borderRadius: 0,
+                      borderBottom: activeTab === 'student' ? '2px solid var(--blue-9)' : 'none',
+                      color: activeTab === 'student' ? 'var(--blue-9)' : 'var(--gray-10)',
+                      backgroundColor: 'transparent',
+                      padding: '12px 16px'
+                    }}
+                  >
+                    <Flex gap="2" align="center">
+                      <BackpackIcon />
+                      My Learning ({studentCoursesData.length})
+                    </Flex>
+                  </Button>
+                  <Button 
+                    variant="ghost"
+                    onClick={() => setActiveTab('teacher')}
+                    style={{
+                      borderRadius: 0,
+                      borderBottom: activeTab === 'teacher' ? '2px solid var(--violet-9)' : 'none',
+                      color: activeTab === 'teacher' ? 'var(--violet-9)' : 'var(--gray-10)',
+                      backgroundColor: 'transparent',
+                      padding: '12px 16px'
+                    }}
+                  >
+                    <Flex gap="2" align="center">
+                      <PersonIcon />
+                      My Teaching ({teacherCoursesData.length})
+                    </Flex>
+                  </Button>
+                </Flex>
+              </Box>
 
               {/* Student Content */}
               {activeTab === 'student' && (
@@ -179,7 +189,7 @@ const DashboardPage: React.FC = () => {
                       </Button>
                     </Flex>
                     
-                    <Grid columns="3" gap="4">
+                    <Flex gap="3" wrap="wrap">
                       {studentCoursesData.map((course) => (
                         <CourseCard
                           key={course.id}
@@ -197,7 +207,7 @@ const DashboardPage: React.FC = () => {
                           }}
                         />
                       ))}
-                    </Grid>
+                    </Flex>
 
                     {/* Learning Stats */}
                     <Box mt="6">
@@ -246,7 +256,7 @@ const DashboardPage: React.FC = () => {
 
                     {teacherCoursesData.length > 0 ? (
                       <>
-                        <Grid columns="3" gap="4">
+                        <Flex gap="3" wrap="wrap">
                           {teacherCoursesData.map((course) => (
                             <CourseCard
                               key={course.id}
@@ -262,7 +272,7 @@ const DashboardPage: React.FC = () => {
                               }}
                             />
                           ))}
-                        </Grid>
+                        </Flex>
 
                         {/* Teaching Stats */}
                         <Box mt="6">
@@ -329,34 +339,34 @@ const DashboardPage: React.FC = () => {
               {/* Quick Actions */}
               <Box mt="8">
                 <Heading size="4" mb="3">Quick Actions</Heading>
-                <Grid columns="4" gap="3">
-                  <Card size="2" style={{ cursor: 'pointer' }}>
+                <Flex gap="2" wrap="wrap">
+                  <Card size="2" style={{ cursor: 'pointer', flex: '1 1 200px' }}>
                     <Flex direction="column" gap="2">
                       <Text size="2" weight="bold">Continue Learning</Text>
                       <Text size="1" color="gray">Resume your last chapter</Text>
                     </Flex>
                   </Card>
-                  <Card size="2" style={{ cursor: 'pointer' }}>
+                  <Card size="2" style={{ cursor: 'pointer', flex: '1 1 200px' }}>
                     <Flex direction="column" gap="2">
                       <Text size="2" weight="bold">Browse Catalog</Text>
                       <Text size="1" color="gray">Discover new courses</Text>
                     </Flex>
                   </Card>
-                  <Card size="2" style={{ cursor: 'pointer' }}>
+                  <Card size="2" style={{ cursor: 'pointer', flex: '1 1 200px' }}>
                     <Flex direction="column" gap="2">
                       <Text size="2" weight="bold">View Analytics</Text>
                       <Text size="1" color="gray">Track your teaching impact</Text>
                     </Flex>
                   </Card>
-                  <Card size="2" style={{ cursor: 'pointer' }}>
+                  <Card size="2" style={{ cursor: 'pointer', flex: '1 1 200px' }}>
                     <Flex direction="column" gap="2">
                       <Text size="2" weight="bold">Community</Text>
                       <Text size="1" color="gray">Connect with peers</Text>
                     </Flex>
                   </Card>
-                </Grid>
+                </Flex>
               </Box>
-            </Container>
+            </Box>
           </Box>
         </Flex>
       </Box>
