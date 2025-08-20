@@ -1,6 +1,6 @@
 import React from 'react';
 import { Theme, Box, Container, Card, Flex, Heading, Text, Button, Grid, Badge } from '@radix-ui/themes';
-import { HomeIcon, PersonIcon, ReaderIcon, Pencil1Icon, GearIcon, ExclamationTriangleIcon, Cross1Icon, EnvelopeClosedIcon, CheckCircledIcon } from '@radix-ui/react-icons';
+import { HomeIcon, PersonIcon, ReaderIcon, Pencil1Icon, GearIcon, ExclamationTriangleIcon, Cross1Icon, EnvelopeClosedIcon, CheckCircledIcon, DashboardIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
 const IndexPage: React.FC = () => {
@@ -25,6 +25,13 @@ const IndexPage: React.FC = () => {
       href: '/magic-link-sent',
       icon: <CheckCircledIcon />,
       status: 'auth'
+    },
+    {
+      title: 'Unified Dashboard',
+      description: 'Combined student and teacher dashboard for dual-role users',
+      href: '/dashboard',
+      icon: <DashboardIcon />,
+      status: 'unified'
     },
     {
       title: 'Student Dashboard',
@@ -76,6 +83,7 @@ const IndexPage: React.FC = () => {
       case 'auth': return 'green';
       case 'student': return 'violet';
       case 'teacher': return 'pink';
+      case 'unified': return 'orange';
       case 'error': return 'red';
       default: return 'gray';
     }
@@ -87,6 +95,7 @@ const IndexPage: React.FC = () => {
       case 'auth': return 'Auth';
       case 'student': return 'Student';
       case 'teacher': return 'Teacher';
+      case 'unified': return 'Unified';
       case 'error': return 'Error';
       default: return 'Other';
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Flex, Box, Text, Button, Heading } from '@radix-ui/themes';
+import { Card, Flex, Box, Text, Button, Heading, Badge } from '@radix-ui/themes';
 import { ArrowRightIcon, ChatBubbleIcon } from '@radix-ui/react-icons';
 import CompletionMeter from './CompletionMeter';
 
@@ -13,8 +13,10 @@ interface CourseCardProps {
   totalStudents?: number;
   completedStudents?: number;
   totalChapters?: number;
+  isPublished?: boolean;
   onGoToChapter?: () => void;
   onContactTeacher?: () => void;
+  onClick?: () => void;
   isSkeleton?: boolean;
 }
 
@@ -28,8 +30,10 @@ const CourseCard: React.FC<CourseCardProps> = ({
   totalStudents,
   completedStudents,
   totalChapters,
+  isPublished,
   onGoToChapter,
   onContactTeacher,
+  onClick,
   isSkeleton = false
 }) => {
   // Skeleton state
@@ -53,6 +57,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
       size="3"
       onMouseEnter={() => setIsHoveringCard(true)}
       onMouseLeave={() => setIsHoveringCard(false)}
+      onClick={onClick}
       style={{
         width: '100%',
         maxWidth: '350px',
@@ -61,7 +66,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
         boxShadow: isHoveringCard
           ? '0 10px 24px rgba(2, 2, 68, 0.18)'
           : 'none',
-        willChange: 'transform, box-shadow'
+        willChange: 'transform, box-shadow',
+        cursor: onClick ? 'pointer' : 'default'
       }}
     >
       {/* Course Image */}
@@ -83,7 +89,18 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
       {/* Course Content */}
       <Box p="3">
-        <Heading size="4" mb="2">{title}</Heading>
+        <Flex align="center" justify="between" mb="2">
+          <Heading size="4">{title}</Heading>
+          {isPublished !== undefined && (
+            <Badge 
+              color={isPublished ? "green" : "orange"} 
+              variant="soft"
+              size="1"
+            >
+              {isPublished ? "Published" : "Draft"}
+            </Badge>
+          )}
+        </Flex>
         
         {description && (
           <Text

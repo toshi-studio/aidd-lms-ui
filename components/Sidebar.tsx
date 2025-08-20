@@ -11,6 +11,7 @@ interface Course {
   title: string;
   currentChapter?: string;
   isPublished?: boolean;
+  type?: 'enrolled' | 'created';
 }
 
 interface Chapter {
@@ -22,7 +23,7 @@ interface Chapter {
 interface SidebarProps {
   userName: string;
   avatarUrl?: string;
-  variant: 'student' | 'teacher' | 'course-reader' | 'course-editor';
+  variant: 'student' | 'teacher' | 'course-reader' | 'course-editor' | 'unified';
   courses?: Course[];
   chapters?: Chapter[];
   courseTitle?: string;
@@ -60,6 +61,73 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Main Content */}
       <Box style={{ flex: 1, overflowY: 'auto' }} p="4">
+        {/* Unified Dashboard Sidebar */}
+        {variant === 'unified' && (
+          <Flex direction="column" gap="3">
+            <Button 
+              size="3" 
+              color="violet"
+              style={{ width: '100%' }}
+              onClick={() => window.location.href = '/course-editor'}
+            >
+              <PlusIcon />
+              Create New Course
+            </Button>
+            
+            {/* Enrolled Courses Section */}
+            <Text size="2" weight="bold" color="gray" mt="3">Learning</Text>
+            {courses.filter(c => c.type === 'enrolled').map((course) => (
+              <Link 
+                key={course.id} 
+                href={`/course?id=${course.id}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <Box 
+                  p="3" 
+                  style={{ 
+                    backgroundColor: 'white',
+                    borderRadius: '8px',
+                    border: '1px solid var(--blue-4)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Text size="2" weight="medium" color="blue">{course.title}</Text>
+                  {course.currentChapter && (
+                    <><br /><Text size="1" color="gray">Current: {course.currentChapter}</Text></>
+                  )}
+                </Box>
+              </Link>
+            ))}
+            
+            {/* Created Courses Section */}
+            <Text size="2" weight="bold" color="gray" mt="3">Teaching</Text>
+            {courses.filter(c => c.type === 'created').map((course) => (
+              <Link 
+                key={course.id} 
+                href={`/course-editor?id=${course.id}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <Flex 
+                  align="center" 
+                  justify="between"
+                  p="3" 
+                  style={{ 
+                    backgroundColor: 'white',
+                    borderRadius: '8px',
+                    border: '1px solid var(--violet-4)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Text size="2" weight="medium" color="violet">{course.title}</Text>
+                  {course.isPublished && (
+                    <StatusPill status="published" />
+                  )}
+                </Flex>
+              </Link>
+            ))}
+          </Flex>
+        )}
+
         {/* Student Dashboard Sidebar */}
         {variant === 'student' && (
           <Flex direction="column" gap="3">
@@ -213,7 +281,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       </Box>
 
       {/* Footer */}
-      {(variant === 'student' || variant === 'teacher') && (
+      {(variant === 'student' || variant === 'teacher' || variant === 'unified') && (
         <>
           <Separator size="4" />
           <Box p="4">
